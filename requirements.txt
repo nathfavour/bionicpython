@@ -1,0 +1,3 @@
+pdf2docx
+python-docx
+spacy
