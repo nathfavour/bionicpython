@@ -6,3 +6,11 @@ convert your pdfs and docx to bionic reading format.
 
 
 ## bionic format
+
+## TO-DO
+
+
+- [X] add usage guide in README.md
+- [ ] create pip package
+- [ ] add other ebook formats like epub, etc
+- [ ] optimise code/ reduce processing time
