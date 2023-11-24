@@ -2,13 +2,13 @@ convert your pdfs and docx to bionic reading format.
 
 ## normal format
 
-![1700775415442](image/README/1700775415442.png)
-
+![1700793569388](image/README/1700793569388.png)
 
 ## bionic format
 
-## TO-DO
+![1700793580179](image/README/1700793580179.png)
 
+## TO-DO
 
 - [X] add usage guide in README.md
 - [ ] create pip package

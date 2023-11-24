@@ -7,6 +7,9 @@ import math
 from docx import Document
 import os
 import spacy
+import subprocess
+import sys
+import re
 
 
 
@@ -31,9 +34,18 @@ def process_word(word, ratio):
 
 def process_document(doc_path, ratio):
     # Check if the file path is for a .docx file
-    if not doc_path.endswith('.docx'):
-        print("Invalid file format. Please provide a .docx file.")
-        return
+    if doc_path.endswith('.docx'):
+        print("already in docx format")
+    elif doc_path.endswith('.pdf'):
+        docx_path = doc_path.replace('.pdf', '.docx')
+        # Run the conversion script as a subprocess with the same Python interpreter
+        subprocess.run([sys.executable, 'converter.py', '--pdf', doc_path, '--docx', docx_path])
+        # Replace '.pdf' with '.docx' in the file path
+        doc_path = docx_path
+    else:
+        print("files of this format are not supported yet")
+        print("please use either .pdf or .docx files")
+        sys.exit()
     
     # Load the spacy model for word recognition
     nlp = spacy.load('en_core_web_sm')
@@ -48,7 +60,12 @@ def process_document(doc_path, ratio):
                 continue
 
             # Split the run text into words
-            words = run.text.split()
+            # words = run.text.split()
+            # words = [word + ' ' for word in run.text.split()]
+            # words = re.findall(r'\s*\S+', run.text)
+            # words = re.findall(r'(?:^|\s)\S+', run.text)
+            words = run.text.split(' ')
+            words = [' ' + word if i != 0 else word for i, word in enumerate(words)]
 
             # Process each word
             new_runs = []
@@ -65,7 +82,7 @@ def process_document(doc_path, ratio):
 
             # Add new runs with the appropriate formatting
             for text, is_bold in new_runs:
-                new_run = paragraph.add_run(text + " ")
+                new_run = paragraph.add_run(text)
                 new_run.bold = is_bold
 
 
