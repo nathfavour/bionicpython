@@ -35,56 +35,71 @@ def process_word(word, ratio):
 def process_document(doc_path, ratio):
     # Check if the file path is for a .docx file
     if doc_path.endswith('.docx'):
-        print("already in docx format")
+        print("Already in docx format")
     elif doc_path.endswith('.pdf'):
         docx_path = doc_path.replace('.pdf', '.docx')
-        # Run the conversion script as a subprocess with the same Python interpreter
-        subprocess.run([sys.executable, 'converter.py', '--pdf', doc_path, '--docx', docx_path])
-        # Replace '.pdf' with '.docx' in the file path
-        doc_path = docx_path
+        try:
+            # Run the conversion script as a subprocess
+            subprocess.run([sys.executable, 'converter.py', '--pdf', doc_path, '--docx', docx_path])
+            # Replace '.pdf' with '.docx' in the file path
+            doc_path = docx_path
+        except subprocess.CalledProcessError as e:
+            print("Error converting PDF:", e)
+            sys.exit(1)
     else:
-        print("files of this format are not supported yet")
-        print("please use either .pdf or .docx files")
+        print("Files of this format are not supported yet")
+        print("Please use either .pdf or .docx files")
         sys.exit()
-    
-    # Load the spacy model for word recognition
-    nlp = spacy.load('en_core_web_sm')
-    
-    # Open the .docx file
-    word_doc = Document(doc_path)
 
-    for paragraph in word_doc.paragraphs:
-        for run in paragraph.runs:
-            # Skip if the run is already bold
-            if run.bold:
-                continue
+    # Load the spacy model for word recognition (wrap in try-except)
+    try:
+        nlp = spacy.load('en_core_web_sm')
+    except OSError as e:
+        print("Error loading spaCy model:", e)
+        sys.exit(1)
 
-            # Split the run text into words
-            # words = run.text.split()
-            # words = [word + ' ' for word in run.text.split()]
-            # words = re.findall(r'\s*\S+', run.text)
-            # words = re.findall(r'(?:^|\s)\S+', run.text)
-            words = run.text.split(' ')
-            words = [' ' + word if i != 0 else word for i, word in enumerate(words)]
+    try:
+        # Open the .docx file
+        word_doc = Document(doc_path)
 
-            # Process each word
-            new_runs = []
-            for word in words:
-                # Use spacy to recognize the words
-                doc = nlp(word)
-                for token in doc:
-                    # Bolden a ratio of the characters in the word
-                    runs = process_word(token.text, ratio)
-                    new_runs.extend(runs)
+        for paragraph in word_doc.paragraphs:
+            for run in paragraph.runs:
+                # Skip if the run is already bold
+                if run.bold:
+                    continue
 
-            # Clear the original run
-            run.text = ''
+                # Split the run text into words
+                words = run.text.split(' ')
+                words = [' ' + word if i != 0 else word for i, word in enumerate(words)]
 
-            # Add new runs with the appropriate formatting
-            for text, is_bold in new_runs:
-                new_run = paragraph.add_run(text)
-                new_run.bold = is_bold
+                # Process each word
+                new_runs = []
+                for word in words:
+                    # Use spacy to recognize the words
+                    doc = nlp(word)
+                    for token in doc:
+                        # Bolden a ratio of the characters in the word
+                        runs = process_word(token.text, ratio)
+                        new_runs.extend(runs)
 
+                # Clear the original run
+                run.text = ''
+
+                # Add new runs with the appropriate formatting
+                for text, is_bold in new_runs:
+                    new_run = paragraph.add_run(text)
+                    new_run.bold = is_bold
+
+        # Save the document (wrap in try-except)
+        try:
+            word_doc.save(output_path)
+        except PermissionError as e:
+            print("Error saving document:", e)
+            sys.exit(1)
+
+    except Exception as e:  # Catch any other unexpected errors
+        print("Unexpected error processing document:", e)
+        sys.exit(1)
 
     # Get the directory and filename from the input path
     dir_name, file_name = os.path.split(doc_path)
@@ -95,8 +110,6 @@ def process_document(doc_path, ratio):
     # Combine the directory and new filename to get the output path
     output_path = os.path.splitext(doc_path)[0] + '_modified.docx'
     print(output_path)
-
-    word_doc.save(output_path)
 
 
 def main():
