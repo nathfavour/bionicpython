@@ -33,6 +33,8 @@ def process_word(word, ratio):
 
 
 def process_document(doc_path, ratio):
+    output_path = os.path.splitext(doc_path)[0] + '_modified.docx'
+
     # Check if the file path is for a .docx file
     if doc_path.endswith('.docx'):
         print("Already in docx format")
@@ -108,7 +110,7 @@ def process_document(doc_path, ratio):
     new_file_name = 'processed_' + file_name
 
     # Combine the directory and new filename to get the output path
-    output_path = os.path.splitext(doc_path)[0] + '_modified.docx'
+    # output_path = os.path.splitext(doc_path)[0] + '_modified.docx'
     print(output_path)
 
 
