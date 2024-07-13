@@ -43,6 +43,10 @@ def process_document(doc_path, ratio):
         try:
             # Run the conversion script as a subprocess
             subprocess.run([sys.executable, 'converter.py', '--pdf', doc_path, '--docx', docx_path])
+
+            # Modify this command to run in the absolute path (with relation to this script) to converter.py
+            subprocess.run([sys.executable, 'converter.py', '--pdf', doc_path, '--docx', docx_path])
+            
             # Replace '.pdf' with '.docx' in the file path
             doc_path = docx_path
         except subprocess.CalledProcessError as e:

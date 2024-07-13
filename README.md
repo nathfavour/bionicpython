@@ -29,3 +29,10 @@ N.B: I am constantly working to make this better, and your suggestions are inval
 - [ ] create pip package
 - [ ] add other ebook formats like epub, etc
 - [ ] optimise code/ reduce processing time
+
+
+## EDIT
+
+1. You can optionally run 'setup.sh' if you're on MacOs or linux.
+2. If you're on windows, you can also run 'setup.ps1'
+3. The aim of these setup scripts is to ease the complexity of setting up bionicpython.
