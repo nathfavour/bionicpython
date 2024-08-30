@@ -38,3 +38,8 @@ N.B: I am constantly working to make this better, and your suggestions are inval
 1. You can optionally run 'setup.sh' if you're on MacOs or linux.
 2. If you're on windows, you can also run 'setup.ps1'
 3. The aim of these setup scripts is to ease the complexity of setting up bionicpython.
+
+## UPDATE ON GUI
+We are still working on the bionicpython app
+
+![alt text](image.png)
