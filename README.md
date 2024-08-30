@@ -29,6 +29,8 @@ N.B: I am constantly working to make this better, and your suggestions are inval
 - [ ] create pip package
 - [ ] add other ebook formats like epub, etc
 - [ ] optimise code/ reduce processing time
+- [ ] create gui application
+
 
 
 ## EDIT
