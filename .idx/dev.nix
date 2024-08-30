@@ -14,6 +14,10 @@
     pkgs.nodePackages.firebase-tools
     pkgs.jdk17
     pkgs.unzip
+    pkgs.cargo
+    # pkgs.rustc
+    pkgs.clang
+    pkgs.rustup
 
   ];
 
