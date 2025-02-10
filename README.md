@@ -31,10 +31,10 @@ Transform your PDFs and DOCX files into an eye-catching, easy-to-read **Bionic R
 
 ## Roadmap 🛣️
 - [X] Provide usage guide
-- [ ] Create a pip package
+- [X] Create a pip package
 - [ ] Add other ebook formats like EPUB
-- [ ] Optimize performance
-- [ ] Build a GUI (we’re on it!)
+- [X] Optimize performance
+- [X] Build a GUI (we’re on it!)
 
 ## Keeping You Posted 📰
 We're actively improving and appreciate your suggestions and contributions.  
